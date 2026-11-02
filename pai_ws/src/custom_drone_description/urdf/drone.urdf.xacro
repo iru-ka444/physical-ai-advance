@@ -1,0 +1,103 @@
+<robot name="custom_drone">
+<xacro:macro name="drone_arm" params="prefix angle">
+<link name="arm_${prefix}">
+<visual>
+<geometry>
+<box size="0.35 0.02 0.015"/>
+</geometry>
+<material name="dark_grey">
+<color rgba="0.2 0.2 0.2 1.0"/>
+</material>
+</visual>
+</link>
+<joint name="arm_${prefix}_joint" type="fixed">
+<parent link="base_link"/>
+<child link="arm_${prefix}"/>
+<origin xyz="0 0 0" rpy="0 0 ${angle}"/>
+</joint>
+<link name="rotor_${prefix}">
+<visual>
+<geometry>
+<cylinder radius="0.08" length="0.008"/>
+</geometry>
+<material name="black">
+<color rgba="0.1 0.1 0.1 0.8"/>
+</material>
+</visual>
+</link>
+<joint name="rotor_${prefix}_joint" type="fixed">
+<parent link="arm_${prefix}"/>
+<child link="rotor_${prefix}"/>
+<origin xyz="0.175 0 0.012" rpy="0 0 0"/>
+</joint>
+</xacro:macro>
+<link name="base_link">
+<inertial>
+<mass value="1.2"/>
+<origin xyz="0 0 0" rpy="0 0 0"/>
+<inertia ixx="0.02" ixy="0" ixz="0" iyy="0.02" iyz="0" izz="0.04"/>
+</inertial>
+<visual>
+<geometry>
+<cylinder radius="0.08" length="0.04"/>
+</geometry>
+<material name="blue">
+<color rgba="0.1 0.2 0.8 1.0"/>
+</material>
+</visual>
+<collision>
+<geometry>
+<box size="0.4 0.4 0.08"/>
+</geometry>
+</collision>
+</link>
+<xacro:drone_arm prefix="front_right" angle="${pi/4}"/>
+<xacro:drone_arm prefix="front_left" angle="${3*pi/4}"/>
+<xacro:drone_arm prefix="back_left" angle="${-3*pi/4}"/>
+<xacro:drone_arm prefix="back_right" angle="${-pi/4}"/>
+<!-- 前方カメラ -->
+<link name="camera_link">
+<visual>
+<geometry>
+<box size="0.03 0.03 0.03"/>
+</geometry>
+<material name="red">
+<color rgba="0.9 0.1 0.1 1.0"/>
+</material>
+</visual>
+</link>
+<joint name="camera_joint" type="fixed">
+<parent link="base_link"/>
+<child link="camera_link"/>
+<origin xyz="0.09 0 0" rpy="0 0 0"/>
+</joint>
+<!-- カメラプラグイン -->
+<gazebo reference="camera_link">
+<sensor type="camera" name="front_camera">
+<update_rate>30.0</update_rate>
+<camera name="head">
+<horizontal_fov>1.3962634</horizontal_fov>
+<image>
+<width>640</width>
+<height>480</height>
+<format>R8G8B8</format>
+</image>
+<clip>
+<near>0.02</near>
+<far>300</far>
+</clip>
+</camera>
+<plugin name="camera_controller" filename="libgazebo_ros_camera.so">
+<ros>
+<remapping>~/image_raw:=/drone/front_camera/image_raw</remapping>
+</ros>
+<camera_name>front_camera</camera_name>
+<frame_name>camera_link</frame_name>
+</plugin>
+</sensor>
+</gazebo>
+<!-- ドローンの無重力化設定 -->
+<gazebo reference="base_link">
+<gravity>0</gravity>
+</gazebo>
+</robot>

@@ -1,0 +1,17 @@
+<sdf version="1.6">
+    <world name="default">
+        <!-- 太陽光と地面の読み込み -->
+        <include>
+            <uri>model://sun</uri>
+        </include>
+        <include>
+            <uri>model://ground_plane</uri>
+        </include>
+        <!-- ワールドプラグインとして gazebo_ros_state を正しく読み込む -->
+        <plugin name="gazebo_ros_state" filename="libgazebo_ros_state.so">
+            <ros>
+                <namespace>/demo</namespace>
+            </ros>
+        </plugin>
+    </world>
+</sdf>

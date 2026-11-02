@@ -1,0 +1,20 @@
+bag_dir: "/home/ubuntu/dataset/rosbags/drone_flight"
+output_dir: "/home/ubuntu/dataset/lerobot_dataset/drone_flight"
+fps: 30
+
+dataset_name: "drone_flight_demo"
+repo_id: "custom_drone_flight"
+
+features:
+  observation.images.front:
+    dtype: video
+    shape: [3, 480, 640]
+    names: [channels, height, width]
+  observation.state:
+    dtype: float32
+    shape: [6]
+    names: [x, y, z, vx, vy, vz]
+  action:
+    dtype: float32
+    shape: [4]
+    names: [vx, vy, vz, wz]

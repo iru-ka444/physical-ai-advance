@@ -1,0 +1,34 @@
+batch_size: 8
+chunk_size: 16
+config_path: configs/drone_features.py
+dataset_root: /home/ubuntu/dataset/lerobot_dataset/drone_flight
+delta_timestamps:
+  action:
+  - 0.0
+  - 0.03333333333333333
+  - 0.06666666666666667
+  - 0.1
+  - 0.13333333333333333
+  - 0.16666666666666666
+  - 0.2
+  - 0.23333333333333334
+  - 0.26666666666666666
+  - 0.3
+  - 0.3333333333333333
+  - 0.36666666666666664
+  - 0.4
+  - 0.43333333333333335
+  - 0.4666666666666667
+  - 0.5
+  observation.images.front:
+  - 0.0
+  observation.state:
+  - 0.0
+device: cpu
+learning_rate: 0.0001
+log_freq: 10
+n_action_steps: 1
+num_workers: 2
+output_directory: outputs/train/drone_flight
+repo_id: custom_drone_flight
+training_steps: 2000
